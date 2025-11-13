@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Happy Paw</title>
+    <link rel="stylesheet" href="./jquery-ui-1.14.1.custom/jquery-ui.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="./jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Happy Paw</h1>
+      <p>Your pet’s happiness, our top priority!</p>
+    </header>
+
+    <section id="services">
+      <h2>Our Services</h2>
+      <div id="tabs">
+        <ul>
+          <li><a href="#tabs-1">Dog Walking</a></li>
+          <li><a href="#tabs-2">Pet Grooming</a></li>
+          <li><a href="#tabs-3">Veterinary</a></li>
+        </ul>
+        <div id="tabs-1">
+          <img src="https://placedog.net/200/140?id=1" alt="Dog Walking" />
+          <p>
+            Professional dog walking service. Your dog will get exercise,
+            socialization, and lots of fun!
+          </p>
+        </div>
+        <div id="tabs-2">
+          <img src="https://placedog.net/200/140?id=2" alt="Pet Grooming" />
+          <p>
+            Bathing, brushing, trimming, and nail care for your furry friend.
+            Keep your pet clean and happy.
+          </p>
+        </div>
+        <div id="tabs-3">
+          <img src="https://placedog.net/200/140?id=3" alt="Pet Stay" />
+          <p>
+            Professional veterinary care for your pets. Regular check-ups,
+            vaccinations, and health advice to keep your furry friends healthy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing & Service Selection</h2>
+
+      <div id="pricing-accordion">
+        <!-- Dog Walking -->
+        <h3>Dog Walking</h3>
+        <div class="service-panel">
+          <label for="dog-walking-duration">Duration:</label>
+          <select id="dog-walking-duration">
+            <option value="">--Select--</option>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="90">1.5 hours</option>
+            <option value="120">2 hours</option>
+          </select>
+          <label for="dog-walking-qty">Pets:</label>
+          <input
+            type="number"
+            id="dog-walking-qty"
+            min="1"
+            value="1"
+            style="width: 60px"
+          />
+          <p>Price: $<span id="dog-walking-price"></span></p>
+          <label for="dog-walking-date">Select Date:</label>
+          <input
+            type="text"
+            id="dog-walking-date"
+            placeholder="Choose a date"
+          />
+        </div>
+
+        <!-- Pet Grooming -->
+        <h3>Pet Grooming</h3>
+        <div class="service-panel">
+          <label for="pet-grooming-type">Type:</label>
+          <select id="pet-grooming-type">
+            <option value="">--Select--</option>
+            <option value="basic">Basic Grooming</option>
+            <option value="full">Full Grooming</option>
+            <option value="deluxe">Deluxe Grooming</option>
+          </select>
+          <label for="pet-grooming-qty">Pets:</label>
+          <input
+            type="number"
+            id="pet-grooming-qty"
+            min="1"
+            value="1"
+            style="width: 60px"
+          />
+          <p>Price: $<span id="pet-grooming-price"></span></p>
+          <label for="pet-grooming-date">Select Date:</label>
+          <input
+            type="text"
+            id="pet-grooming-date"
+            placeholder="Choose a date"
+          />
+        </div>
+
+        <!-- Veterinary -->
+        <h3>Veterinary</h3>
+        <div class="service-panel">
+          <label for="veterinary-type">Service:</label>
+          <select id="veterinary-type">
+            <option value="">--Select--</option>
+            <option value="checkup">Check-up</option>
+            <option value="vaccination">Vaccination</option>
+            <option value="surgery">Minor Surgery</option>
+          </select>
+          <label for="veterinary-qty">Pets:</label>
+          <input
+            type="number"
+            id="veterinary-qty"
+            min="1"
+            value="1"
+            style="width: 60px"
+          />
+          <p>Price: $<span id="veterinary-price"></span></p>
+          <label for="veterinary-date">Select Date:</label>
+          <input type="text" id="veterinary-date" placeholder="Choose a date" />
+        </div>
+      </div>
+    </section>
+
+    <section id="selected-services">
+      <h2>Selected Services</h2>
+      <div class="order-container">
+        <table
+          id="services-table"
+          border="1"
+          style="width: 100%; border-collapse: collapse; text-align: center"
+        >
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Option / Duration</th>
+              <th>Date</th>
+              <th>Pets</th>
+              <th>Unit Price</th>
+              <th>Total Price</th>
+              <th>Action</th>
+              <!-- 新增列 -->
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 动态生成 -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" style="text-align: right; font-weight: bold">
+                Total:
+              </td>
+              <td id="grand-total">$0</td>
+            </tr>
+          </tfoot>
+        </table>
+        <button
+          id="place-order"
+          style="margin-top: 15px; padding: 8px 16px; font-size: 16px"
+        >
+          Place Order
+        </button>
+      </div>
+
+      <!-- 下单后的订单区域 -->
+      <div id="orders-history" style="margin-top: 30px">
+        <!-- 多订单会追加到这里 -->
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <h2>Testimonials</h2>
+      <div class="testimonial">"Great service! My dog loves them!" - Alice</div>
+      <div class="testimonial" style="display: none">
+        "Professional and caring staff." - Bob
+      </div>
+      <div class="testimonial" style="display: none">
+        "My cat was happy and comfortable!" - Carol
+      </div>
+    </section>
+
+    <section id="contact">
+      <button id="contact-btn">Contact Us</button>
+    </section>
+
+    <div id="dialog" title="Contact Info" style="display: none">
+      <p>Email: contact@happypaw.com</p>
+      <p>Phone: +1 234 567 890</p>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
