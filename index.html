@@ -14,8 +14,10 @@
       <p>Your pet’s happiness, our top priority!</p>
     </header>
 
+    <!-- Services Section with Tabs -->
     <section id="services">
       <h2>Our Services</h2>
+      <!-- Tabs for different services, the jQueryui tabs widget -->
       <div id="tabs">
         <ul>
           <li><a href="#tabs-1">Dog Walking</a></li>
@@ -46,6 +48,7 @@
       </div>
     </section>
 
+    <!-- Pricing & Service Selection Section with Accordion -->
     <section id="pricing">
       <h2>Pricing & Service Selection</h2>
 
@@ -130,6 +133,7 @@
       </div>
     </section>
 
+    <!-- Selected Services & Order Section -->
     <section id="selected-services">
       <h2>Selected Services</h2>
       <div class="order-container">
@@ -147,12 +151,9 @@
               <th>Unit Price</th>
               <th>Total Price</th>
               <th>Action</th>
-              <!-- 新增列 -->
             </tr>
           </thead>
-          <tbody>
-            <!-- 动态生成 -->
-          </tbody>
+          <tbody></tbody>
           <tfoot>
             <tr>
               <td colspan="5" style="text-align: right; font-weight: bold">
@@ -170,12 +171,13 @@
         </button>
       </div>
 
-      <!-- 下单后的订单区域 -->
+      <!-- Orders History Section -->
       <div id="orders-history" style="margin-top: 30px">
-        <!-- 多订单会追加到这里 -->
+        <!-- History of placed orders will be appended here -->
       </div>
     </section>
 
+    <!-- Testimonials Section -->
     <section id="testimonials">
       <h2>Testimonials</h2>
       <div class="testimonial">"Great service! My dog loves them!" - Alice</div>
@@ -187,6 +189,7 @@
       </div>
     </section>
 
+    <!-- Contact Section with Dialog -->
     <section id="contact">
       <button id="contact-btn">Contact Us</button>
     </section>

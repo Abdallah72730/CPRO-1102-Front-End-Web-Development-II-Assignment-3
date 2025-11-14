@@ -1,28 +1,28 @@
 $(function () {
-  // Tabs
+  // Tabs, from jQuery UI
   $("#tabs").tabs();
 
   // Pricing calculations
   $(function () {
-    // Accordion 初始化
+    // Accordion, from jQuery UI
     $("#pricing-accordion").accordion({
       collapsible: true,
       heightStyle: "content",
     });
 
-    // 价格数据
+    // price data
     const dogWalkingPrices = { 30: 15, 60: 30, 90: 45, 120: 60 };
     const groomingPrices = { basic: 40, full: 60, deluxe: 80 };
     const veterinaryPrices = { checkup: 60, vaccination: 80, surgery: 150 };
 
-    // Datepicker 初始化，限制今天到30天后
+    // Datepicker initialization, limit from today to 30 days later
     $("#dog-walking-date, #pet-grooming-date, #veterinary-date").datepicker({
       minDate: 0,
       maxDate: "+30D",
       dateFormat: "yy-mm-dd",
     });
 
-    // 更新总价函数
+    // Function to recalculate the grand total, will be called after each update
     function recalculateGrandTotal() {
       let grandTotal = 0;
       $("#services-table tbody tr").each(function () {
@@ -34,7 +34,7 @@ $(function () {
       $("#place-order").prop("disabled", grandTotal === 0);
     }
 
-    // 更新服务清单函数
+    // Function to update the service list, called on input changes
     function updateService(
       serviceId,
       typeVal,
@@ -76,7 +76,7 @@ $(function () {
       recalculateGrandTotal();
     }
 
-    // 绑定服务事件
+    // Bind service events, to avoid code duplication, will be called for each service
     function bindServiceEvents(service) {
       const {
         selectId,
@@ -130,7 +130,7 @@ $(function () {
       serviceName: "Veterinary",
     });
 
-    // 下单功能
+    // Place order button click event
     $("#place-order").click(function () {
       const tbody = $("#services-table tbody");
       if (tbody.find("tr").length === 0) {
@@ -140,7 +140,7 @@ $(function () {
 
       const orderId = "order-" + new Date().getTime();
 
-      // 生成订单表格 HTML，只取前6列，去掉 Delete 按钮
+      // Generate order table HTML, only take the first 6 columns, remove the Delete button
       let orderTbodyHtml = "";
       tbody.find("tr").each(function () {
         const serviceName = $(this).find("td").eq(0).text();
@@ -162,6 +162,7 @@ $(function () {
           `;
       });
 
+      // Create order div with progress bar
       const orderDiv = $(`
     <div class="order-card" id="${orderId}" style="border:2px solid #1E90FF; padding:15px; margin-bottom:20px; border-radius:8px; background:#f0f8ff; position:relative;">
       <h3 style="color:#1E90FF;">Order #${orderId}</h3>
@@ -191,10 +192,12 @@ $(function () {
     </div>
   `);
 
+      // Prepend the new order to orders history, limit to 5 visible orders, order by newest first
       $("#orders-history").prepend(orderDiv);
 
       let orders = $("#orders-history .order-card");
 
+      // limit to 5 visible orders, hide older ones
       orders.each(function (i) {
         if (i < 5) {
           $(this).removeClass("hidden-order");
@@ -212,12 +215,12 @@ $(function () {
       $("#pricing-accordion span[id$='-price']").text("");
       $("#place-order").prop("disabled", true);
 
-      // 模拟进度条
+      // progress bar simulation
       const statuses = [
         { text: "Pending", color: "#1E90FF" },
         { text: "Confirm", color: "#00CED1" },
-        { text: "In Service", color: "#32CD32" },
-        { text: "Completed", color: "#FF8C00" },
+        { text: "In Service", color: "#006effff" },
+        { text: "Completed", color: "#32CD32" },
       ];
       let step = 0;
       const progressBar = orderDiv.find(".progress-bar");
@@ -227,19 +230,24 @@ $(function () {
       progressText.text(statuses[0].text);
       progressBar.css("background", statuses[0].color);
 
+      // set a timer to update progress every 5 seconds
       const interval = setInterval(function () {
         step++;
         if (step >= statuses.length) {
+          // clear interval when done, otherwise it will keep running
           clearInterval(interval);
           progressBar.css("width", "100%");
           progressText.text(statuses[statuses.length - 1].text);
           progressBar.css("background", statuses[statuses.length - 1].color);
           return;
         }
+        // update progress bar
+        // calculate percentage, step 0 = 0%, step 1 = 33%, step 2 = 66%, step 3 = 100%
         const percent = (step / (statuses.length - 1)) * 100;
         progressBar.css("width", percent + "%");
         progressText.text(statuses[step].text);
         progressBar.css("background", statuses[step].color);
+        // each step lasts 5 seconds
       }, 5000);
     });
   });
@@ -253,16 +261,6 @@ $(function () {
       $(testimonials[tIndex]).fadeIn(800);
     });
   }, 4000);
-
-  // Booking form animation
-  $("#booking-form").submit(function (e) {
-    e.preventDefault();
-    $(this)
-      .find("button")
-      .animate({ width: "140px", backgroundColor: "#ff9900" }, 300)
-      .animate({ width: "120px", backgroundColor: "#eee" }, 300);
-    alert("Booking submitted!");
-  });
 
   // Contact dialog
   $("#contact-btn").click(function () {

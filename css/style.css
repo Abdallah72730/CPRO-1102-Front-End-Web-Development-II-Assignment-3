@@ -1,3 +1,4 @@
+/* Header Section */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -5,11 +6,17 @@ body {
   background: #fefefe;
 }
 
+section {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+/* Header Section */
 header {
-  background: #1e90ff; /* DodgerBlue */
+  background: #1e90ff;
   padding: 20px;
   text-align: center;
-  color: #fff; /* 文字改成白色，更好看 */
+  color: #fff;
 }
 
 header h1 {
@@ -22,6 +29,7 @@ header p {
   font-size: 18px;
 }
 
+/* Banner Section */
 #banner {
   position: relative;
   height: 400px;
@@ -34,12 +42,7 @@ header p {
   object-fit: cover;
 }
 
-section {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
+/* Section Titles */
 #services h2,
 #pricing h2,
 #testimonials h2,
@@ -48,9 +51,10 @@ section {
   margin-bottom: 20px;
 }
 
+/* Service Panel */
 .service-panel {
   padding: 15px 10px;
-  background: #f0f8ff; /* 淡蓝色背景 */
+  background: #f0f8ff;
   border-radius: 5px;
 }
 
@@ -74,7 +78,7 @@ section {
   margin: 10px 0;
 }
 
-/* Accordion header 样式 */
+/* Accordion Header */
 .ui-accordion .ui-accordion-header {
   background: #1e90ff;
   color: #fff;
@@ -92,11 +96,13 @@ section {
   margin-top: 5px;
 }
 
+/* Services Table */
 #services-table th,
 #services-table td {
   padding: 8px;
 }
 
+/* Order Card */
 .order-card h3 {
   margin-top: 0;
   color: #1e90ff;
@@ -106,6 +112,7 @@ section {
   display: none;
 }
 
+/* Progress Bar */
 .progress-bar-container {
   position: relative;
   margin-top: 10px;
@@ -124,6 +131,7 @@ section {
   font-weight: bold;
 }
 
+/* Booking Form */
 #booking-form {
   text-align: center;
 }
@@ -140,6 +148,7 @@ section {
   cursor: pointer;
 }
 
+/* Testimonials Section */
 #testimonials {
   text-align: center;
   font-style: italic;
