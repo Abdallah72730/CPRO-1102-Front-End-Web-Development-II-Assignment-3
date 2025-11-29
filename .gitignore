@@ -1,0 +1,14 @@
+# Configuration files with sensitive data
+js/config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
