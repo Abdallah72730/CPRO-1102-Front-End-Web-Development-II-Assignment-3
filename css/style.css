@@ -165,3 +165,21 @@ header p {
   font-size: 16px;
   cursor: pointer;
 }
+
+ #star-rating {
+    font-size: 2.5rem;
+    cursor: pointer;
+  }
+
+  .star {
+    color: lightgray;
+    transition: 0.5s;
+  }
+
+  .star.filled {
+    color: gold;
+  }
+
+  .star.hovered {
+    color: blue;
+  }

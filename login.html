@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Paw - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      width: 350px;
+    }
+
+    h1 {
+      color: #1e90ff;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1e90ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1873cc;
+    }
+
+    .toggle-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .toggle-text a {
+      color: #1e90ff;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .toggle-text a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🐾 Happy Paw</h1>
+    <p class="subtitle">Your pet's happiness, our top priority!</p>
+
+    <!-- Message area for errors/success -->
+    <div id="message" class="message"></div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-section">
+      <h2 style="text-align: center; color: #333;">Login</h2>
+      
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="Enter your email">
+      
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Enter your password">
+      
+      <button id="login-button">Login</button>
+      
+      <p class="toggle-text">
+        Don't have an account? <a id="go-to-register">Register here</a>
+      </p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-section" class="hidden">
+      <h2 style="text-align: center; color: #333;">Register</h2>
+      
+      <label>Full Name</label>
+      <input type="text" id="register-name" placeholder="Enter your full name">
+      
+      <label>Email</label>
+      <input type="email" id="register-email" placeholder="Enter your email">
+      
+      <label>Password</label>
+      <input type="password" id="register-password" placeholder="Create a password (min 6 chars)">
+      
+      <label>Confirm Password</label>
+      <input type="password" id="register-confirm" placeholder="Confirm your password">
+      
+      <button id="register-button">Register</button>
+      
+      <p class="toggle-text">
+        Already have an account? <a id="go-to-login">Login here</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // When page loads, run this code
+    $(function () {
+      
+      // Create storage if it doesn't exist
+      if (!localStorage.getItem('happypaw_users')) {
+        localStorage.setItem('happypaw_users', JSON.stringify({}));
+      }
+
+      // SWITCH BETWEEN LOGIN AND REGISTER
+      $("#go-to-register").click(function () {
+        $("#login-section").addClass("hidden");
+        $("#register-section").removeClass("hidden");
+        hideMessage();
+      });
+
+      $("#go-to-login").click(function () {
+        $("#register-section").addClass("hidden");
+        $("#login-section").removeClass("hidden");
+        hideMessage();
+      });
+
+      // SHOW ERROR MESSAGE
+      function showError(text) {
+        $("#message").removeClass("success").addClass("error").text(text).show();
+      }
+
+      // SHOW SUCCESS MESSAGE
+      function showSuccess(text) {
+        $("#message").removeClass("error").addClass("success").text(text).show();
+      }
+
+      // HIDE MESSAGE
+      function hideMessage() {
+        $("#message").hide();
+      }
+
+      // GET ALL USERS FROM STORAGE
+      function getAllUsers() {
+        return JSON.parse(localStorage.getItem('happypaw_users'));
+      }
+
+      // SAVE USERS TO STORAGE
+      function saveAllUsers(users) {
+        localStorage.setItem('happypaw_users', JSON.stringify(users));
+      }
+
+      // REGISTER BUTTON CLICK
+      $("#register-button").click(function () {
+        var name = $("#register-name").val().trim();
+        var email = $("#register-email").val().trim().toLowerCase();
+        var password = $("#register-password").val();
+        var confirm = $("#register-confirm").val();
+
+        // Check if fields are empty
+        if (name === "" || email === "" || password === "") {
+          showError("All fields are required!");
+          return;
+        }
+
+        // Check password length
+        if (password.length < 6) {
+          showError("Password must be at least 6 characters!");
+          return;
+        }
+
+        // Check if passwords match
+        if (password !== confirm) {
+          showError("Passwords do not match!");
+          return;
+        }
+
+        // Get all users
+        var users = getAllUsers();
+
+        // Check if email already exists
+        if (users[email]) {
+          showError("This email is already registered!");
+          return;
+        }
+
+        // Create new user
+        users[email] = {
+          name: name,
+          email: email,
+          password: password
+        };
+
+        // Save to storage
+        saveAllUsers(users);
+
+        // Show success and switch to login
+        showSuccess("Registration successful! Please login.");
+        
+        setTimeout(function () {
+          $("#register-name").val("");
+          $("#register-email").val("");
+          $("#register-password").val("");
+          $("#register-confirm").val("");
+          $("#go-to-login").click();
+        }, 2000);
+      });
+
+      // LOGIN BUTTON CLICK
+      $("#login-button").click(function () {
+        var email = $("#login-email").val().trim().toLowerCase();
+        var password = $("#login-password").val();
+
+        // Check if fields are empty
+        if (email === "" || password === "") {
+          showError("Please enter both email and password!");
+          return;
+        }
+
+        // Get all users
+        var users = getAllUsers();
+
+        // Check if user exists
+        if (!users[email]) {
+          showError("No account found with this email!");
+          return;
+        }
+
+        // Check if password is correct
+        if (users[email].password !== password) {
+          showError("Incorrect password!");
+          return;
+        }
+
+        // Login successful!
+        showSuccess("Login successful! Redirecting...");
+
+        // Save current user session
+        localStorage.setItem('happypaw_current_user', JSON.stringify({
+          name: users[email].name,
+          email: email
+        }));
+
+        // Redirect to main page
+        setTimeout(function () {
+          window.location.href = "index.html";
+        }, 1500);
+      });
+
+    });
+  </script>
+</body>
+</html>

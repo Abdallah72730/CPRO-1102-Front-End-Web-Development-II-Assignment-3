@@ -48,6 +48,18 @@
       </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+      <h2>Testimonials</h2>
+      <div class="testimonial">"Great service! My dog loves them!" - Alice</div>
+      <div class="testimonial" style="display: none">
+        "Professional and caring staff." - Bob
+      </div>
+      <div class="testimonial" style="display: none">
+        "My cat was happy and comfortable!" - Carol
+      </div>
+    </section>
+
     <!-- Pricing & Service Selection Section with Accordion -->
     <section id="pricing">
       <h2>Pricing & Service Selection</h2>
@@ -177,15 +189,30 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials">
-      <h2>Testimonials</h2>
-      <div class="testimonial">"Great service! My dog loves them!" - Alice</div>
-      <div class="testimonial" style="display: none">
-        "Professional and caring staff." - Bob
-      </div>
-      <div class="testimonial" style="display: none">
-        "My cat was happy and comfortable!" - Carol
+    <!--Review Form-->
+    <section id="reviews" title="Leave a review" style="display: none">
+      <h2>Leave a Review</h2>
+      <form id="review-form">
+        <label for="reviewer-name">Name:</label>
+        <input type="text" id="reviewer-name" required /><br /><br />
+        <label for="review-text">Review:</label><br />
+        <textarea id="review-text" rows="4" cols="50" required></textarea
+        ><br /><br />
+
+        <div id="star-rating" >
+          <span class="star" data-value="1">☆</span>
+          <span class="star" data-value="2">☆</span>
+          <span class="star" data-value="3">☆</span>
+          <span class="star" data-value="4">☆</span>
+          <span class="star" data-value="5">☆</span>
+        </div>
+      </form>
+    </section>
+
+    <!--Review Container-->
+    <section id="review-container" style="display: none;">
+      <div id="reviews-list" style="margin-top: 20px " >
+        <!-- Submitted reviews will appear here -->
       </div>
     </section>
 
