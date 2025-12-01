@@ -249,11 +249,11 @@ $(function () {
   /* ------------------------------
      ORDER STORAGE FUNCTIONS (Save to users object)
   ------------------------------ */
-  
+
   /* ------------------------------
      UTILITY FUNCTIONS
   ------------------------------ */
-  
+
   // Generate random coordinates within Alberta, Canada
   // Alberta province coordinates: Latitude 49°N to 60°N, Longitude -120°W to -110°W
   function generateRandomAlbertaCoordinates() {
@@ -263,23 +263,23 @@ $(function () {
     // Longitude range for Alberta (-120°W to -110°W)
     const minLng = -120.0;
     const maxLng = -110.0;
-    
+
     // Generate random latitude and longitude
     const lat = minLat + Math.random() * (maxLat - minLat);
     const lng = minLng + Math.random() * (maxLng - minLng);
-    
+
     return {
       lat: lat,
       lng: lng,
       // Format as address string for display
-      address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`
+      address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
     };
   }
- 
+
   // Get current user data from localStorage
   function getCurrentUserData() {
     const users = JSON.parse(localStorage.getItem("happypaw_users") || "{}");
-    // Initialize user object if it doesn't exist
+    // Initialize user object if it doesn't exist, for the user logged in for the first time
     if (!users[currentUser.email]) {
       users[currentUser.email] = {
         name: currentUser.name,
@@ -350,15 +350,17 @@ $(function () {
       // Update order in storage with generated location
       const users = getCurrentUserData();
       const orders = users[currentUser.email].orders;
-      const orderIndex = orders.findIndex((o) => o.orderId === orderData.orderId);
+      const orderIndex = orders.findIndex(
+        (o) => o.orderId === orderData.orderId
+      );
       if (orderIndex !== -1) {
         orders[orderIndex].userLocation = orderData.userLocation;
         saveUserData(users);
       }
     }
-    
-    let orderTbodyHtml = "";
+
     // Build table rows from order items
+    let orderTbodyHtml = "";
     orderData.items.forEach(function (item) {
       orderTbodyHtml += `
         <tr>
@@ -406,7 +408,9 @@ $(function () {
         ? "View Reviews"
         : "Submit a Review"
     }</button>
-          <button class="navigation-btn ui-button ui-corner-all ui-widget" data-order-id="${orderData.orderId}" style="text-align:right;">View Navigation</button>
+          <button class="navigation-btn ui-button ui-corner-all ui-widget" data-order-id="${
+            orderData.orderId
+          }" style="text-align:right;">View Navigation</button>
         </div>
 
         <div class="progress-bar-container" style="background:#ddd; height:25px; border-radius:5px; margin-top:10px; position:relative;">
@@ -485,7 +489,7 @@ $(function () {
   }
 
   /* ------------------------------
-     TABS
+      Service tabs INITIALIZATION
   ------------------------------ */
   $("#tabs").tabs();
 
@@ -561,11 +565,12 @@ $(function () {
         parseFloat($(this).find("td.total-price").text().replace("$", "")) || 0;
     });
     $("#grand-total").text("$" + grandTotal);
+    // Enable/disable Place Order button based on grand total
     $("#place-order").prop("disabled", grandTotal === 0);
   }
 
   /* ------------------------------
-     UPDATE SERVICE ROW
+     Update Service Row
   ------------------------------ */
   function updateService(
     selectId,
@@ -579,11 +584,14 @@ $(function () {
     let unitPrice = unitPriceData[typeVal] || 0;
     let totalPrice = unitPrice * qtyVal;
 
+    // Display unit price in tabs
     $("#" + priceSpanId).text(unitPrice > 0 ? totalPrice : "");
 
-    let tbody = $("#services-table tbody");
-    tbody.find(`tr[data-service="${serviceName}"]`).remove();
+    // Update selected services table
+    let selectedServicesTable = $("#services-table tbody");
+    selectedServicesTable.find(`tr[data-service="${serviceName}"]`).remove();
 
+    // Add new row if all fields are valid
     if (unitPrice > 0 && qtyVal > 0 && typeVal && dateVal) {
       let row = `
         <tr data-service="${serviceName}">
@@ -595,10 +603,11 @@ $(function () {
           <td class="total-price">$${totalPrice}</td>
           <td><button class="delete-service ui-button ui-corner-all ui-widget">Delete</button></td>
         </tr>`;
-      tbody.append(row);
+      selectedServicesTable.append(row);
     }
 
-    tbody
+    // Bind delete button event
+    selectedServicesTable
       .find(".delete-service")
       .off("click")
       .on("click", function () {
@@ -612,6 +621,8 @@ $(function () {
   /* ------------------------------
      BIND SERVICE EVENTS
   ------------------------------ */
+  // Generic function to bind events for a service
+  // use to bind events(like change, keyup) to service inputs and update service row accordingly
   function bindServiceEvents(service) {
     const { selectId, qtyId, dateId, unitPriceData, priceSpanId, serviceName } =
       service;
@@ -636,6 +647,7 @@ $(function () {
     );
   }
 
+  // Bind events for each service
   bindServiceEvents({
     selectId: "dog-walking-duration",
     qtyId: "dog-walking-qty",
@@ -688,11 +700,12 @@ $(function () {
   /* ------------------------------
      PLACE ORDER
   ------------------------------ */
+  // Handle Place Order button click
   $("#place-order").click(function () {
-    const tbody = $("#services-table tbody");
+    const selectedServicesTable = $("#services-table tbody");
 
     // Check if at least one service is selected
-    if (tbody.find("tr").length === 0) {
+    if (selectedServicesTable.find("tr").length === 0) {
       alert("Please select at least one service.");
       return;
     }
@@ -705,7 +718,7 @@ $(function () {
 
     // Collect order items data
     let orderItems = [];
-    tbody.find("tr").each(function () {
+    selectedServicesTable.find("tr").each(function () {
       orderItems.push({
         service: $(this).find("td").eq(0).text(),
         option: $(this).find("td").eq(1).text(),
@@ -774,7 +787,7 @@ $(function () {
 
     // Generate random user address in Alberta for this order
     const userLocation = generateRandomAlbertaCoordinates();
-    
+
     // Save order data to users object in localStorage
     const orderData = {
       orderId: orderId,
@@ -793,7 +806,7 @@ $(function () {
     saveOrderToStorage(orderData);
 
     /* Reset form visually */
-    tbody.empty();
+    selectedServicesTable.empty();
     $("#grand-total").text("$0");
     $("#pricing-accordion select").val("");
     $("#pricing-accordion input[type='number']").val("1");
@@ -867,7 +880,7 @@ $(function () {
      CONTACT DIALOG
   ------------------------------ */
   $("#contact-btn").click(function () {
-    $("#dialog").dialog();
+    $("#contactInfo").dialog();
   });
 
   /* ------------------------------
@@ -883,6 +896,7 @@ $(function () {
     });
   });
 
+  // Without this, stars remain hovered after mouse leaves
   $(".star").on("mouseleave", function () {
     $(".star").removeClass("hovered");
   });
@@ -1009,7 +1023,7 @@ $(function () {
   /* ------------------------------
      NAVIGATION SYSTEM
   ------------------------------ */
-  
+
   // Global variable to store map instance
   let navigationMap = null;
   let directionsService = null;
