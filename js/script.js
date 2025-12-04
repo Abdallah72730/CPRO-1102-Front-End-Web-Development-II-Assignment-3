@@ -500,6 +500,7 @@ $(function () {
     });
     $("#grand-total").text("$" + grandTotal);
     // Enable/disable Place Order button based on grand total
+    // This will lead to the button stop alert when deleted all services after placing an order
     $("#place-order").prop("disabled", grandTotal === 0);
   }
 
