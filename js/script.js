@@ -610,7 +610,6 @@ $(function () {
   /* ------------------------------
      VALIDATE DATE INPUT
   ------------------------------ */
-  // to do: user还是可以手动输入无效日期
   function validateAllDates() {
     let valid = true;
 
